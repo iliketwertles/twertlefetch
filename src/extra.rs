@@ -1,18 +1,19 @@
 pub mod extra {
-    use std::io::Result;
-    use std::path::Path;
-    use uname_rs::Uname;
+    use crate::basic::basic::birth;
+    use crate::basic::basic::desk;
+    use crate::basic::basic::dist;
+    use crate::basic::basic::kern;
+    use crate::gpu::gpu::gpu;
+    use crate::pack::pack;
+    use colored::Colorize;
+    use std::env;
     use std::fs::File;
     use std::io::BufRead;
     use std::io::BufReader;
-    use colored::Colorize;
-    use std::env;
-    use crate::basic::basic::kern;
-    use crate::basic::basic::dist;
-    use crate::basic::basic::desk;
-    use crate::pack::pack;
-    use crate::basic::basic::birth;
-    
+    use std::io::Result;
+    use std::path::Path;
+    use uname_rs::Uname;
+
     pub fn pickle_fetch() {
         fn arch() -> Result<String> {
             let uts = Uname::new()?;
@@ -27,14 +28,13 @@ pub mod extra {
             };
             let reader = BufReader::new(file);
             for line in reader.lines().flatten() {
-                    match line.find("model name") {
-                        Some(_) => {
-                            let stripped =
-                                line.trim_start_matches("model name	: ").replace('\"', "");
-                            return stripped;
-                        }
-                        None => {}
+                match line.find("model name") {
+                    Some(_) => {
+                        let stripped = line.trim_start_matches("model name	: ").replace('\"', "");
+                        return stripped;
                     }
+                    None => {}
+                }
             }
             String::from("Unknown")
         }
@@ -42,10 +42,10 @@ pub mod extra {
         fn mem() -> String {
             if let Ok(file) = File::open("/proc/meminfo") {
                 let reader = BufReader::new(file);
-        
+
                 let mut total_memory = 0;
                 let mut available_memory = 0;
-        
+
                 for line in reader.lines() {
                     if let Ok(line) = line {
                         let parts: Vec<&str> = line.split_whitespace().collect();
@@ -66,15 +66,20 @@ pub mod extra {
                         }
                     }
                 }
-        
+
                 let used_memory = total_memory - available_memory;
                 let used_memory_mb = used_memory / 1024;
                 let total_memory_mb = total_memory / 1024;
-                let display_memory = format!("{}Mb/{}Mb", used_memory_mb.to_string(), total_memory_mb.to_string());
-        
-                return display_memory
-                
-            } else { return "idk".to_string() }
+                let display_memory = format!(
+                    "{}Mb/{}Mb",
+                    used_memory_mb.to_string(),
+                    total_memory_mb.to_string()
+                );
+
+                return display_memory;
+            } else {
+                return "idk".to_string();
+            }
         }
 
         fn init() -> &'static str {
@@ -103,12 +108,15 @@ pub mod extra {
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡎⠀⢧⡈⣀⡏⠠⠤⣳⠀⠸⠀⡆",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡘⠰⡟⢿⣵⡥⠙⣆⡴⠁⠀⠇⢀⠃",
             &format!("⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠃⠘⢧⣄⡛⢻⠿⡋⣿⠀⠰⠀⢸⠀     Distro: {}", dist().cyan()),
-            &format!("⠀⠀⠀⠀⠀⠀⠀⠀⢀⠞⣏⠀⠀⠉⠙⠻⠿⡿⠟⠀⠃⢀⠇⠀     Kernel: {}", kern().yellow()),
+            &format!("⠀⠀⠀⠀⠀⠀⠀⠀⢀⠞⣏⠀⠀⠉⠙⠻⠿⡿⠟⠀⠃⢀⠇⠀     Kernel: {}", kern().unwrap().yellow()),
             &format!("⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡸⠀⣸⠀⠀     Desktop: {}", desk().red()),
             &format!("⠀⠀⠀⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⢀⠃⠀⠀     Packages: {}", pack().blue()),
-            &format!("⠀⠀⠀⠀⠀⠀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⡸⠀⠀⠀     Arch: {}",arch().unwrap().purple()),
+            &format!(
+                "⠀⠀⠀⠀⠀⠀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⡸⠀⠀⠀     Arch: {}",
+                arch().unwrap().purple()
+            ),
             &format!("⠀⠀⠀⠀⠀⠀⡾⣖⠀⠀⠀⠀⠀⠀⠀⢠⠀⠴⠃⢠⠁⠀⠀⠀     CPU: {}", cpu().green()),
-            &format!("⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠆⠀⠀⢀⠎⠀⠀⠀⠀     GPU: {}", "PUT GPU HERE"),
+            &format!("⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠆⠀⠀⢀⠎⠀⠀⠀⠀     GPU: {}", gpu().yellow()),
             &format!("⠀⠀⠀⢰⠊⠀⠀⡀⠀⠀⠀⠀⠀⠀⠌⢠⠁⠀⡼⠀⠀⠀⠀⠀     Init: {}", init().red()),
             &format!("⠀⠀⢠⠋⠀⢰⡖⠁⠀⠠⠀⠀⠀⡌⢠⠃⠀⡜⠀⠀⠀⠀⠀⠀     Shell: {}", shell().magenta()),
             &format!("⠀⢀⠻⡍⠀⠀⠀⠀⡀⠁⠀⢀⠌⠠⠃⠀⡜⠀⠀⠀⠀⠀⠀⠀     Mem: {}", mem().cyan()),

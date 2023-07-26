@@ -1,11 +1,13 @@
 pub mod basic {
+    use crate::pack::pack;
     use colored::*;
     use std::env;
     use std::fs;
     use std::fs::File;
     use std::io::BufRead;
     use std::io::BufReader;
-    use crate::pack::pack;
+    use std::io::Result;
+    use uname_rs::Uname;
 
     pub fn dist() -> String {
         let os_release = File::open("/etc/os-release");
@@ -38,7 +40,7 @@ pub mod basic {
         ret
     }
 
-    pub fn kern() -> String {
+    /*pub fn kern() -> String {
         let data = fs::read_to_string("/proc/version").unwrap();
         match data.find("version") {
             Some(_) => {
@@ -52,7 +54,12 @@ pub mod basic {
             }
             None => "idk bro".to_string(),
         }
-    }
+    }*/
+
+    pub fn kern() -> Result<String> {
+            let uts = Uname::new()?;
+            Ok(uts.release)
+        }
 
     pub fn birth() -> u64 {
         let root_meta = fs::metadata("/").unwrap();
@@ -61,14 +68,17 @@ pub mod basic {
     }
 
     pub fn normal_ascii() {
-              let ascii: [&str; 7] = [
+        let ascii: [&str; 7] = [
             "     .--.",
             &format!("    |o_o |    Distro: {}", dist().cyan()),
-            &format!("    |:_/ |    Kernel: {}", kern().yellow()),
+            &format!("    |:_/ |    Kernel: {}", kern().unwrap().yellow()),
             &format!(r"   //   \ \   Desktop: {}", desk().red()),
             &format!("  (|     | )  Packages: {}", pack().blue()),
             r" /'\_   _/`\ ",
-            &format!(r" \___)=(___/  You installed {} days ago", birth().to_string()),
+            &format!(
+                r" \___)=(___/  You installed {} days ago",
+                birth().to_string()
+            ),
         ];
         for line in ascii {
             println!("{}", line);
