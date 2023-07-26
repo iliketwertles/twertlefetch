@@ -1,6 +1,9 @@
 pub mod pack {
+    extern crate nix;
     use std::path::Path;
     use std::fs;
+    use std::process::Command;
+
     pub fn pack() -> String {
         if Path::new("/var/db/pkg").is_dir() {
             fs::read_dir("/var/db/pkg")
@@ -10,7 +13,7 @@ pub mod pack {
                     .flatten()
                     .flatten()
                     .count()
-                    .to_string() // convert the count to a String
+                    .to_string()
             })
             .unwrap_or_else(|_| String::from("Unable to read package directory"))
         }else if Path::new("/var/lib/pacman/local").is_dir() {
@@ -24,6 +27,17 @@ pub mod pack {
                 }
             }
             count.to_string()
+        }else if Path::new("/etc/apk").is_dir() {
+            let output = Command::new("apk")
+                .args(&["info", "-v"])
+                .output()
+                .expect("Failed to execute apk command");
+    
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            let lines: Vec<&str> = stdout.split('\n').collect();
+    
+            let total_packages = lines.len().to_string();
+            return total_packages;
         }else { return "not supported yet :/".to_string() } // REPLACE TO ADD MORE PKG MANAGER SUPPORT!
     }
 }
