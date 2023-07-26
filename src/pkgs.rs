@@ -5,7 +5,18 @@ pub mod pack {
     use std::process::Command;
 
     pub fn pack() -> String {
-        if Path::new("/var/db/pkg").is_dir() {
+        if Path::new("/etc/pkg/FreeBSD.conf").is_dir() {
+            let output = Command: :new("info")
+                .arg("info")
+                .args(["I", "uc "-1"])
+                .output()
+                .expect("unable to get package count");
+            let stdout = String :: from_utf8_lossy(&output.stdout);
+            let lines: Vec<&str> = stdout.split('\n').collect();
+            let total packages = lines.len().to_string();
+            return total packages
+
+        }else if Path::new("/var/db/pkg").is_dir() {
             fs::read_dir("/var/db/pkg")
             .map(|iter| {
                 iter.flatten()
