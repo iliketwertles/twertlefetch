@@ -38,6 +38,21 @@ pub mod pack {
     
             let total_packages = lines.len().to_string();
             return total_packages;
+        }else if Path::new("/nix/store").is_dir() {
+            let home = std::env::var("HOME").expect("$HOME is not set!");
+            let profile = format!("{home}/.nix-profile");
+
+            let output = Command::new("nix-store")
+                .args(&["-qR", "/run/current-system/sw", profile.as_str()])
+                .output()
+                .expect("Failed to execute nix-store command");
+
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            //println!("{stdout:?}");
+            let lines: Vec<&str> = stdout.split('\n').collect();
+
+            let total_packages = lines.len().to_string();
+            return total_packages;
         }else { return "not supported yet :/".to_string() } // REPLACE TO ADD MORE PKG MANAGER SUPPORT!
     }
 }
