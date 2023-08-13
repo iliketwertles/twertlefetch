@@ -1,11 +1,11 @@
 use std::env;
-
-mod pkgs;
-mod extra;
 mod basic;
-pub use crate::pkgs::pack;
-pub use crate::extra::extra::pickle_fetch;
+mod extra;
+pub mod gpu;
+mod pkgs;
 pub use crate::basic::basic::normal_ascii;
+pub use crate::extra::extra::pickle_fetch;
+pub use crate::pkgs::pack;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -16,9 +16,7 @@ fn main() {
             "-p" => {
                 pickle_fetch();
             }
-            _ => {
-                normal_ascii()
-            }
+            _ => normal_ascii(),
         }
     }
 }

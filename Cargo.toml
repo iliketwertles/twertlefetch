@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 colored = "2"
 uname-rs = "0.1.1"
+nix = "0.26.2"
+devices = "0.3.0"

@@ -40,22 +40,6 @@ pub mod basic {
         ret
     }
 
-    /*pub fn kern() -> String {
-        let data = fs::read_to_string("/proc/version").unwrap();
-        match data.find("version") {
-            Some(_) => {
-                let stripped = data
-                    .trim_start_matches("Linux version ")
-                    .split('(')
-                    .next()
-                    .unwrap()
-                    .trim();
-                stripped.to_string()
-            }
-            None => "idk bro".to_string(),
-        }
-    }*/
-
     pub fn kern() -> Result<String> {
             let uts = Uname::new()?;
             Ok(uts.release)

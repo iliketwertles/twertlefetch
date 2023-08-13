@@ -3,6 +3,7 @@ pub mod extra {
     use crate::basic::basic::desk;
     use crate::basic::basic::dist;
     use crate::basic::basic::kern;
+    use crate::gpu::gpu::gpu;
     use crate::pack::pack;
     use colored::Colorize;
     use std::env;
@@ -115,7 +116,7 @@ pub mod extra {
                 arch().unwrap().purple()
             ),
             &format!("⠀⠀⠀⠀⠀⠀⡾⣖⠀⠀⠀⠀⠀⠀⠀⢠⠀⠴⠃⢠⠁⠀⠀⠀     CPU: {}", cpu().green()),
-            &format!("⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠆⠀⠀⢀⠎⠀⠀⠀⠀     GPU: {}", "idk yet".to_string().yellow()),
+            &format!("⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠆⠀⠀⢀⠎⠀⠀⠀⠀     GPU: {}", gpu().yellow()),
             &format!("⠀⠀⠀⢰⠊⠀⠀⡀⠀⠀⠀⠀⠀⠀⠌⢠⠁⠀⡼⠀⠀⠀⠀⠀     Init: {}", init().red()),
             &format!("⠀⠀⢠⠋⠀⢰⡖⠁⠀⠠⠀⠀⠀⡌⢠⠃⠀⡜⠀⠀⠀⠀⠀⠀     Shell: {}", shell().magenta()),
             &format!("⠀⢀⠻⡍⠀⠀⠀⠀⡀⠁⠀⢀⠌⠠⠃⠀⡜⠀⠀⠀⠀⠀⠀⠀     Mem: {}", mem().cyan()),
