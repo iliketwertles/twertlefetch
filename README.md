@@ -8,6 +8,10 @@ twertlefetch is a lightweight command-line tool written in Rust that provides sy
 - Currently supports Alpine(i think), Arch, Artix, and Gentoo Linux distributions
 - More distributions will be added in future updates (if requested)
 
+## Screenshots
+![image](https://github.com/iliketwertles/twertlefetch/assets/67071538/cc74a7f2-102b-47fb-9df5-0b1e6eadc463)
+![image](https://github.com/iliketwertles/twertlefetch/assets/67071538/a39f6928-8fe1-4183-ba67-3b0218f4ad98)
+
 
 ## Usage
 
