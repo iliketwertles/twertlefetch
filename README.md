@@ -5,11 +5,10 @@ twertlefetch is a lightweight command-line tool written in Rust that provides sy
 
 - Displays system information
 - Written in Rust for performance and reliability
-- Currently supports Arch, Artix, and Gentoo Linux distributions
-- More distributions will be added in future updates
+- Currently supports Alpine(i think), Arch, Artix, and Gentoo Linux distributions
+- More distributions will be added in future updates (if requested)
 
-## Anti-Features
-- Cannot fetch gpu name, need help for this, for now, self compile and put your gpu in
+
 ## Usage
 
 1. Clone the repository:
