@@ -5,7 +5,7 @@ twertlefetch is a lightweight command-line tool written in Rust that provides sy
 
 - Displays system information
 - Written in Rust for performance and reliability
-- Currently supports Alpine(i think), Arch, Artix, and Gentoo Linux distributions
+- Currently supports Alpine(i think), Arch, Artix, NixOS(should also do nix standalone) and Gentoo Linux distributions
 - More distributions will be added in future updates (if requested)
 
 ## Screenshots
