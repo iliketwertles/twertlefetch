@@ -53,6 +53,20 @@ pub mod pack {
 
             let total_packages = lines.len().to_string();
             return total_packages;
+        }else if Path::new("/etc/apt").is_dir() {
+            let output = Command::new("dpkg-query")
+                .arg("-f")
+                .arg("'.\n'")
+                .arg("-W")
+                .output()
+                .expect("cant run dpkg-query");
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            let lines: Vec<&str> = stdout.split('\n').collect();
+            
+            //                                         |
+            // I do not know why its 1 package off but V
+            let total_packages = lines.len() - 1;
+            return total_packages.to_string();
         }else { return "not supported yet :/".to_string() } // REPLACE TO ADD MORE PKG MANAGER SUPPORT!
     }
 }
