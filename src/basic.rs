@@ -3,38 +3,26 @@ pub mod basic {
     use colored::*;
     use std::env;
     use std::fs;
-    use std::fs::File;
-    use std::io::BufRead;
-    use std::io::BufReader;
     use std::io::Result;
     use uname_rs::Uname;
 
     pub fn dist() -> String {
-        let os_release = File::open("/etc/os-release");
-        let file = match os_release {
-            Ok(file) => file,
-            Err(e) => panic!("Unable to open file: {}", e),
-        };
-        let reader = BufReader::new(file);
-        for line in reader.lines() {
-            if let Ok(line) = line {
-                match line.find("NAME=") {
-                    Some(_) => {
-                        let stripped = line.trim_start_matches("NAME=").replace('\"', "");
-                        return stripped;
-                    }
-                    None => {}
-                }
+        let os_release = std::fs::read_to_string("/etc/os-release").expect("couldn't read /etc/os-release");
+        for line in os_release.lines() {
+            if line.starts_with("NAME=") {
+                let distro = line.trim_start_matches("NAME=").replace('\"', "");
+                return distro;
             }
         }
         String::from("Unknown")
     }
+
     pub fn desk() -> String {
         let ret = match env::var("XDG_CURRENT_DESKTOP") {
             Ok(val) => val,
-            Err(_e) => match env::var("DESKTOP_SESSION") {
+            Err(_) => match env::var("DESKTOP_SESSION") {
                 Ok(val) => val,
-                Err(_e) => "None?".to_string(),
+                Err(_) => "None or unknown".to_string(),
             },
         };
         ret
