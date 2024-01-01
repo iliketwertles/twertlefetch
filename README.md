@@ -1,6 +1,11 @@
 # Twertlefetch
 twertlefetch is a lightweight command-line tool written in Rust that provides system information.
 
+
+# new repo for a new version 
+## ∟> https://github.com/iliketwertles/twertlefetchcpp
+
+
 ## NOTES
 if you have more than one dgpu(that is a grapics card) then the printed output might be a bit funky, please share anything weird with me @iliketwertles on discord
 
